@@ -72,7 +72,7 @@ PROMPTEOF
 cat "$DAILY_FILE" >> "$PROMPT_FILE"
 
 # Get Claude to reformat it
-FORMATTED_CONTENT=$(claude -p "$PROMPT_FILE" 2>/dev/null)
+FORMATTED_CONTENT=$(claude --print "$(cat "$PROMPT_FILE")" 2>/dev/null)
 
 # Cleanup temp file
 rm "$PROMPT_FILE"
