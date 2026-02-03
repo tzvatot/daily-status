@@ -53,7 +53,7 @@ cat > "$PROMPT_FILE" <<'PROMPTEOF'
 Reformat the daily status report below into this exact structure. Output ONLY the markdown sections shown below. Do NOT include any preamble, explanation, commentary, or notes about what you're doing. Start directly with "## Accomplishments":
 
 ## Accomplishments
-[Bullet points of key things completed today]
+[Bullet points of key things completed today - convert ALL Jira ticket references (MGMT-XXXXX) to clickable markdown links like [MGMT-XXXXX](https://issues.redhat.com/browse/MGMT-XXXXX)]
 
 ## Risks & Challenges
 [Any blockers, issues, or concerns - or "None"]
@@ -61,8 +61,7 @@ Reformat the daily status report below into this exact structure. Output ONLY th
 ## Key Effort
 [One sentence describing main focus area]
 
-## Related Links
-[GitHub PRs, Jira tickets, etc. as bullet points - convert MGMT-XXXXX to [MGMT-XXXXX](https://issues.redhat.com/browse/MGMT-XXXXX)]
+IMPORTANT: Do NOT create a "Related Links" section. All Jira tickets should be inline clickable links in the Accomplishments section.
 
 Daily status content:
 
