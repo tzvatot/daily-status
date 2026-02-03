@@ -6,14 +6,33 @@ source ~/.bashrc_elad
 
 REPO_DIR="$HOME/work/src/github/daily-status"
 DAILY_FILES_DIR="$HOME/.claude/plans"
-TODAY=$(date +%Y-%m-%d)
 
-# Find today's daily status file
-DAILY_FILE=$(ls -t "$DAILY_FILES_DIR"/daily-status-${TODAY}*.md 2>/dev/null | head -1)
+# Accept optional date parameter (defaults to today)
+# Usage: ./publish-daily-status.sh [YYYY-MM-DD]
+# Examples:
+#   ./publish-daily-status.sh              # publishes today
+#   ./publish-daily-status.sh 2026-02-02   # publishes Feb 2
+#   ./publish-daily-status.sh yesterday    # publishes yesterday
+if [[ -n "$1" ]]; then
+    # Allow relative dates like "yesterday"
+    REPORT_DATE=$(date -d "$1" +%Y-%m-%d 2>/dev/null)
+    if [[ -z "$REPORT_DATE" ]]; then
+        echo "❌ Invalid date: $1"
+        echo "   Use format: YYYY-MM-DD or relative dates like 'yesterday'"
+        exit 1
+    fi
+else
+    REPORT_DATE=$(date +%Y-%m-%d)
+fi
+
+echo "📅 Publishing status for: $REPORT_DATE"
+
+# Find daily status file for the specified date
+DAILY_FILE=$(ls -t "$DAILY_FILES_DIR"/daily-status-${REPORT_DATE}*.md 2>/dev/null | head -1)
 
 if [[ -z "$DAILY_FILE" ]]; then
-    echo "❌ No daily status file found for $TODAY"
-    echo "   Expected: $DAILY_FILES_DIR/daily-status-${TODAY}*.md"
+    echo "❌ No daily status file found for $REPORT_DATE"
+    echo "   Expected: $DAILY_FILES_DIR/daily-status-${REPORT_DATE}*.md"
     exit 1
 fi
 
@@ -67,16 +86,16 @@ fi
 FORMATTED_CONTENT=$(echo "$FORMATTED_CONTENT" | sed -n '/^## Accomplishments/,$p')
 
 # Create the formatted file with frontmatter
-FORMATTED_FILE="$REPO_DIR/${TODAY}.md"
+FORMATTED_FILE="$REPO_DIR/${REPORT_DATE}.md"
 
 cat > "$FORMATTED_FILE" <<EOF
 ---
 layout: default
-title: Daily Status - $TODAY
-date: $TODAY
+title: Daily Status - $REPORT_DATE
+date: $REPORT_DATE
 ---
 
-# Daily Status - $TODAY
+# Daily Status - $REPORT_DATE
 
 $FORMATTED_CONTENT
 EOF
@@ -85,15 +104,15 @@ echo "✅ Formatted by Claude"
 
 # Commit and push to GitHub
 cd "$REPO_DIR"
-git add "${TODAY}.md"
+git add "${REPORT_DATE}.md"
 
 if git diff --cached --quiet; then
     echo "⚠️  No changes to commit (status already published)"
     exit 0
 fi
 
-git commit -m "Daily status update - $TODAY"
+git commit -m "Daily status update - $REPORT_DATE"
 git push origin main
 
 echo "✅ Published to GitHub"
-echo "🔗 URL: https://tzvatot.github.io/daily-status/${TODAY}"
+echo "🔗 URL: https://tzvatot.github.io/daily-status/${REPORT_DATE}"
