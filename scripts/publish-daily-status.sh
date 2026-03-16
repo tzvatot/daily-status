@@ -81,7 +81,7 @@ cat > "$PROMPT_FILE" <<'PROMPTEOF'
 Reformat the daily status report below into this exact structure. Output ONLY the markdown sections shown below. Do NOT include any preamble, explanation, commentary, or notes about what you're doing. Start directly with "## Accomplishments":
 
 ## Accomplishments
-[Bullet points of key things completed today - convert ALL Jira ticket references (MGMT-XXXXX) to clickable markdown links like [MGMT-XXXXX](https://issues.redhat.com/browse/MGMT-XXXXX)]
+[Bullet points of key things completed today - mid/high level summary of WHAT was accomplished and WHY, not HOW]
 
 ## Risks & Challenges
 [Any blockers, issues, or concerns - or "None"]
@@ -89,7 +89,14 @@ Reformat the daily status report below into this exact structure. Output ONLY th
 ## Key Effort
 [One sentence describing main focus area]
 
-IMPORTANT: Do NOT create a "Related Links" section. All Jira tickets should be inline clickable links in the Accomplishments section.
+IMPORTANT RULES:
+- Write at a mid/high level: describe what was accomplished and why, NOT implementation details.
+- Do NOT include: function names, variable names, enum values, struct/type names, commit SHAs, gRPC paths, file paths, or any code-level details.
+- Do NOT create a "Related Links" section. All references should be inline clickable links in the text.
+- Convert ALL Jira ticket references (MGMT-XXXXX) to clickable markdown links: [MGMT-XXXXX](https://issues.redhat.com/browse/MGMT-XXXXX)
+- Convert ALL PR references for osac-project repos (e.g. osac-operator#131) to clickable GitHub links: [osac-operator#131](https://github.com/osac-project/osac-operator/pull/131)
+- Convert ALL PR references for innabox repos (e.g. cluster-api-provider-agent#42) to clickable GitHub links: [cluster-api-provider-agent#42](https://github.com/innabox/cluster-api-provider-agent/pull/42)
+- For any repo#N reference, infer the org from context (osac-project or innabox) and create the appropriate link.
 
 Daily status content:
 
