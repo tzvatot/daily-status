@@ -15,7 +15,7 @@ import urllib.parse
 from datetime import datetime, timezone
 from pathlib import Path
 
-CHANNEL_ID = "C08ESMFV85Q"
+CHANNEL_ID = "C0B7WCEA7NJ"
 SEARCH_TEXT = "Please update your daily status"
 CONFIG_DIR = Path.home() / ".config" / "slack"
 SLACK_API_BASE = "https://slack.com/api"
